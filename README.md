@@ -8,15 +8,14 @@ Install the framework using `setup.sh`
 Extract images from rosbag
 
 ```
-python3 bag2images.py shapes_translation.bag
+./runv python3 scripts/bag2images.py shapes_translation.bag
 ```
 
 ## ✍🏽 Step 2
 Annotate images using `labelme`
 
 ```
-export PYTHONPATH=$PYTHONPATH:$(pwd)/annotation_framework/
-python3 annotation_framework/labelme/__main__.py
+./runv labelme
 ```
 
 1. Open Dir
@@ -28,13 +27,12 @@ python3 annotation_framework/labelme/__main__.py
 Convert annotations using `labelme2coco`
 
 ```
-export PYTHONPATH=$PYTHONPATH:$(pwd)/annotation_framework/
-python3 labelme2coco-launcher.py shapes_translation/
+./runv python3 scripts/labelme2coco-launcher.py shapes_translation/
 ```
 
 ## 👀 Optional
 Visualize result
 
 ```
-python3 coco-viz.py shapes_translation/dvs_image_raw.json
+./runv python3 scripts/coco-viz.py shapes_translation/dvs_image_raw.json
 ```

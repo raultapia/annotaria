@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+
+source annotation-env/bin/activate
+if [ -z "$VIRTUAL_ENV" ]; then
+    echo -e "${RED}Error: Virtual environment activation failed.${RESET}"
+    exit 1
+else
+    echo -e "${GREEN}Virtual environment activated: $VIRTUAL_ENV${RESET}"
+fi
+
+"$@"
+cmd_exit_code=$?
+
+deactivate
+echo -e "${GREEN}Virtual environment deactivated"
+
+exit $cmd_exit_code
