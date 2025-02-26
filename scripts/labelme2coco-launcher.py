@@ -23,4 +23,10 @@ if __name__ == '__main__':
     for path in sys.argv[1:]:
         for folder in [x for x in os.listdir(path) if os.path.isdir(f"{path}/{x}")]:
             with open(f"{path}/{folder}.json", 'w') as f:
-                json.dump(labelme2coco.get_coco_from_labelme_folder(f"{path}/{folder}").json, f, indent=2)
+                x = labelme2coco.get_coco_from_labelme_folder(f"{path}/{folder}").json
+
+                for image in x.get("images", []):
+                    file_name = image.get("file_name", "")
+                    image["file_name"] = os.path.basename(file_name)
+
+                json.dump(x, f, indent=2)

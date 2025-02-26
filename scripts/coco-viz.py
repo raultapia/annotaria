@@ -10,13 +10,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+import argparse
 import cv2
 import dataclasses
 import enum
 import json
 import numpy
 import os
-import sys
 
 
 @dataclasses.dataclass
@@ -104,7 +104,7 @@ def callback(x):
     Config.FPS = x
 
 
-def main(json_file):
+def main(json_file, images_folder):
     with open(json_file, 'r') as f:
         coco = json.load(f)
 
@@ -113,9 +113,7 @@ def main(json_file):
     color_list = generate_colors(len(coco['categories']), "RAINBOW")
 
     if Config.DISPLAY_NON_ANNOTATED:
-        x = img_data[0]['file_name']
-        x = x[:len(x) - x[::-1].index("/")]
-        filenames = [x + y for y in os.listdir(x) if y[-4:] == '.png']
+        filenames = [x for x in os.listdir(images_folder) if x[-4:] == '.png']
         annotated_filenames = [x['file_name'] for x in img_data]
         filenames.sort()
         annotated_filenames.sort()
@@ -129,7 +127,7 @@ def main(json_file):
     cv2.setTrackbarMin("FPS", "COCO VISUALIZER", 1)
 
     while True:
-        img = cv2.imread(filenames[k] if Config.DISPLAY_NON_ANNOTATED else img_data[k]['file_name'])
+        img = cv2.imread(images_folder + filenames[k] if Config.DISPLAY_NON_ANNOTATED else images_folder + img_data[k]['file_name'])
         if rotate:
             img = cv2.rotate(img, cv2.ROTATE_180)
         img, scale = reshape(img, 1e6)
@@ -173,12 +171,22 @@ def main(json_file):
 
 
 if __name__ == "__main__":
-    if not len(sys.argv) == 2:
-        raise Exception("This scripts receives a json file.")
+    parser = argparse.ArgumentParser(description="COCO visualizer.")
+    parser.add_argument("json_file", help="Path to the JSON file.")
+    parser.add_argument("images_folder", nargs="?", default=None, help="Optional path to the folder containing the images. If not provided, images path is obtained from the json path")
+    args = parser.parse_args()
 
-    if not os.path.isfile(sys.argv[1]):
-        raise Exception(f"{sys.argv[1]} is not a valid json file.")
+    if not os.path.isfile(args.json_file):
+        raise Exception(f"{args.json_file} is not a valid JSON file.")
 
-    main(sys.argv[1])
+    if args.images_folder is None:
+        args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace(".json", "/")
+
+    if args.images_folder and not os.path.isdir(args.images_folder):
+        raise Exception(f"{args.images_folder} is not a valid directory.")
+
+    print(f"JSON file: {args.json_file}")
+    print(f"Images folder: {args.images_folder}")
+    main(args.json_file, args.images_folder)
 
     cv2.destroyAllWindows()
