@@ -13,4 +13,5 @@ python3 -m venv annotation-env
 ./runv pip install labelme2coco --verbose
 
 sed -i '1s/^/#/' annotation-env/lib/python*/site-packages/sahi/models/__init__.py
+sed -i '/import os; os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")/d' annotation-env/lib/python*/site-packages/labelme/__main__.py
 sed -i '1i import os; os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")' annotation-env/lib/python*/site-packages/labelme/__main__.py
