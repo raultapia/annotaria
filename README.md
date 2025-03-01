@@ -30,6 +30,13 @@ Convert annotations using `labelme2coco`
 ./runv python3 scripts/labelme2coco-launcher.py shapes_translation/
 ```
 
+## 🗑️ Optional
+Labelme JSON files can be removed since they can be retrieved at any time from the COCO JSON file.
+
+```
+./runv python3 scripts/coco2labelme.py shapes_translation/dvs_image_raw.json
+```
+
 ## 👀 Optional
 Visualize result
 
