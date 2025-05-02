@@ -1,45 +1,97 @@
 # Annotation Framework
-This is my annotation framework.
+
+Welcome to my personal image annotation framework!
 
 ## 🧩 Installation
-Install the framework using `setup.sh`
 
-## 📤 Step 1
-Extract images from rosbag
+To get started, install the framework:
 
-```
-./runv python3 scripts/bag2images.py shapes_translation.bag
-```
-
-## ✍🏽 Step 2
-Annotate images using `labelme`
-
-```
-./runv labelme
+```bash
+git clone https://github.com/raultapia/annotator
+pip install .
 ```
 
-1. Open Dir
-2. Check that "File > Save automatically" is on
-3. Annotate!
-4. Close app when finished
+## 💬 Commands
 
-## 🔁 Step 3
-Convert annotations using `labelme2coco`
+| **Command**    | **Description**                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------- |
+| `bag2images`   | Extract individual image frames from a ROS bag file, enabling easy access to raw image data   |
+| `labelme`      | Annotate images with polygons, bounding boxes, or other shapes using `labelme` tool           |
+| `labelme2coco` | Convert `labelme` annotation files into the widely-used COCO dataset format for compatibility |
+| `coco2labelme` | Recreate `labelme` JSON files from a COCO JSON file, retrieving original data                 |
+| `cocoviz`      | Visualize COCO dataset annotations with an interactive GUI                                    |
 
-```
-./runv python3 scripts/labelme2coco-launcher.py shapes_translation/
+---
+
+### `bag2images`
+
+#### Arguments:
+
+- `BAG_FILE` (required): One or more paths to ROS bag files (`.bag`) to process.
+
+#### Example:
+
+```bash
+bag2images my_rosbag.bag
 ```
 
-## 🗑️ Optional
-Labelme JSON files can be removed since they can be retrieved at any time from the COCO JSON file.
+---
 
-```
-./runv python3 scripts/coco2labelme.py shapes_translation/dvs_image_raw.json
+### `labelme`
+
+#### Arguments:
+
+No additional arguments are required. The tool will launch the GUI for annotation.
+
+#### Example:
+
+```bash
+labelme
 ```
 
-## 👀 Optional
-Visualize result
+---
 
+### `labelme2coco`
+
+#### Arguments:
+
+- `FOLDERS` (required): One or more folders containing `labelme` JSON files to process.
+
+#### Example:
+
+```bash
+labelme2coco annotations_folder
 ```
-./runv python3 scripts/coco-viz.py shapes_translation/dvs_image_raw.json
+
+---
+
+### `coco2labelme`
+
+#### Arguments:
+
+- `json_file` (required): Path to the COCO JSON file.
+- `images_folder` (optional): Path to the folder containing the images. If not provided, the images path is derived from the JSON file.
+
+#### Example:
+
+```bash
+coco2labelme coco_annotations.json images_folder
 ```
+
+---
+
+### `cocoviz`
+
+#### Arguments:
+
+- `json_file` (required): Path to the COCO JSON file.
+- `images_folder` (optional): Path to the folder containing the images. If not provided, the images path is derived from the JSON file.
+- `--skip-non-annotated` or `-s` (optional): Skip displaying non-annotated images.
+
+#### Example:
+
+```bash
+cocoviz coco_annotations.json images_folder --skip-non-annotated
+```
+
+---

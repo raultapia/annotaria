@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "annotator"
+version = "1.0.0"
+description = "xxx"
+authors = [{ name = "Raul Tapia", email = "raultapia@us.es" }]
+license = "GPL-3.0-or-later"
+requires-python = ">=3.7"
+dependencies = [
+    "argparse",
+    "bagpy",
+    "cv-bridge",
+    "labelme",
+    "labelme2coco",
+    "numpy",
+    "opencv-python",
+    "pyqt5",
+    "tqdm",
+]
+
+[project.scripts]
+bag2images = "annotator.bag2images:main"
+labelme = "annotator.labelme:main"
+labelme2coco = "annotator.labelme2coco:main"
+coco2labelme = "annotator.coco2labelme:main"
+cocoviz = "annotator.cocoviz:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["annotator"]
+
+[tool.distutils.egg_info]
+egg_base = "."

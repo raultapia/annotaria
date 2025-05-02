@@ -10,6 +10,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+import tqdm
 import argparse
 import json
 import labelme
@@ -55,7 +56,7 @@ def get_line_extremes(points):
     return [[point_min[0], point_min[1]], [point_max[0], point_max[1]]]
 
 
-def main(coco_json_path, images_folder):
+def coco2labelme(coco_json_path, images_folder):
     with open(coco_json_path, 'r', encoding='utf-8') as f:
         coco_data = json.load(f)
 
@@ -115,7 +116,7 @@ def main(coco_json_path, images_folder):
 
         image_id_to_shapes[image_id].append(shape)
 
-    for image_id, img_info in image_id_to_info.items():
+    for image_id, img_info in tqdm.tqdm(image_id_to_info.items(), desc="Generating LabelMe annotations", unit="file", colour="yellow"):
         shapes = image_id_to_shapes[image_id]
 
         labelme_annotation = {
@@ -138,7 +139,7 @@ def main(coco_json_path, images_folder):
             json.dump(labelme_annotation, f, ensure_ascii=False, indent=2)
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="COCO visualizer.")
     parser.add_argument("json_file", help="Path to the JSON file.")
     parser.add_argument("images_folder", nargs="?", default=None, help="Optional path to the folder containing the images. If not provided, images path is obtained from the json path")
@@ -155,4 +156,8 @@ if __name__ == "__main__":
 
     print(f"JSON file: {args.json_file}")
     print(f"Images folder: {args.images_folder}")
-    main(args.json_file, args.images_folder)
+    coco2labelme(args.json_file, args.images_folder)
+
+
+if __name__ == "__main__":
+    main()

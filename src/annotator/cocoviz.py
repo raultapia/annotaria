@@ -22,7 +22,6 @@ import os
 @dataclasses.dataclass
 class Config:
     ADD_LABEL: bool = True
-    DISPLAY_NON_ANNOTATED: bool = True
     ALWAYS_DRAW_BBOX: bool = True
     FPS: int = 20
 
@@ -104,7 +103,7 @@ def callback(x):
     Config.FPS = x
 
 
-def main(json_file, images_folder):
+def cocoviz(json_file, images_folder, skip_non_annotated):
     with open(json_file, 'r') as f:
         coco = json.load(f)
 
@@ -112,14 +111,14 @@ def main(json_file, images_folder):
     ann_data = coco['annotations']
     color_list = generate_colors(len(coco['categories']), "RAINBOW")
 
-    if Config.DISPLAY_NON_ANNOTATED:
+    if not skip_non_annotated:
         filenames = [x for x in os.listdir(images_folder) if x[-4:] == '.png']
         annotated_filenames = [x['file_name'] for x in img_data]
         filenames.sort()
         annotated_filenames.sort()
         has_annotations = [x in annotated_filenames for x in filenames]
 
-    k = Counter(0, len(filenames) - 1 if Config.DISPLAY_NON_ANNOTATED else len(img_data) - 1)
+    k = len(img_data) - 1 if skip_non_annotated else Counter(0, len(filenames) - 1)
     sleep = True
     rotate = False
     cv2.namedWindow("COCO VISUALIZER", cv2.WINDOW_AUTOSIZE)
@@ -127,15 +126,15 @@ def main(json_file, images_folder):
     cv2.setTrackbarMin("FPS", "COCO VISUALIZER", 1)
 
     while True:
-        img = cv2.imread(images_folder + filenames[k] if Config.DISPLAY_NON_ANNOTATED else images_folder + img_data[k]['file_name'])
+        img = cv2.imread(images_folder + img_data[k]['file_name'] if skip_non_annotated else images_folder + filenames[k])
         if rotate:
             img = cv2.rotate(img, cv2.ROTATE_180)
         img, scale = reshape(img, 1e6)
         for ann in ann_data:
-            if Config.DISPLAY_NON_ANNOTATED:
-                check = has_annotations[k] and ann['image_id'] == img_data[annotated_filenames.index(filenames[k])]['id']
-            else:
+            if skip_non_annotated:
                 check = ann['image_id'] == img_data[k]['id']
+            else:
+                check = has_annotations[k] and ann['image_id'] == img_data[annotated_filenames.index(filenames[k])]['id']
             if check:
                 # Label
                 x, y, w, h = [scale * x for x in ann['bbox']]
@@ -170,10 +169,11 @@ def main(json_file, images_folder):
             return
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="COCO visualizer.")
     parser.add_argument("json_file", help="Path to the JSON file.")
     parser.add_argument("images_folder", nargs="?", default=None, help="Optional path to the folder containing the images. If not provided, images path is obtained from the json path")
+    parser.add_argument("--skip-non-annotated", "-s", action="store_true", help="Do not display non-annotated images.")
     args = parser.parse_args()
 
     if not os.path.isfile(args.json_file):
@@ -187,6 +187,10 @@ if __name__ == "__main__":
 
     print(f"JSON file: {args.json_file}")
     print(f"Images folder: {args.images_folder}")
-    main(args.json_file, args.images_folder)
+    cocoviz(args.json_file, args.images_folder, args.skip_non_annotated)
 
     cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    main()

@@ -17,10 +17,16 @@ import os
 import rosbag
 import sys
 import tqdm
+import argparse
 
-if __name__ == '__main__':
-    for arg in sys.argv[1:]:
-        if not (os.path.isfile(arg) and arg[-4:] == ".bag"):
+
+def main():
+    parser = argparse.ArgumentParser(description="Process ROS bag files containing sensor_msgs/Image messages.")
+    parser.add_argument("bag_files", metavar="BAG_FILE", type=str, nargs="+", help="Path to one or more ROS bag files (.bag) to process.")
+    args = parser.parse_args()
+
+    for arg in args.bag_files:
+        if not (os.path.isfile(arg) and arg.endswith(".bag")):
             raise Exception(f"{arg} is not a valid bag file.")
 
     for file in sys.argv[1:]:
@@ -33,7 +39,7 @@ if __name__ == '__main__':
             output_subpath = f"{output_path}/{(topic[1:] if topic[0] == '/' else topic).replace('/', '_')}"
             os.system(f"mkdir -p {output_subpath}")
             total_messages = bag.get_message_count(topic)
-            progress = tqdm.tqdm(total=bag.get_message_count(topic), desc=f"{file} ({topic})")
+            progress = tqdm.tqdm(total=bag.get_message_count(topic), desc=f"{file} ({topic})", unit="message", colour="yellow")
             for msg in bag.read_messages(topic):
                 progress.update(1)
                 bridge = cv_bridge.CvBridge()
@@ -41,3 +47,7 @@ if __name__ == '__main__':
                 cv_image.astype(numpy.uint8)
                 cv2.imwrite(f"{output_subpath}/{str(msg.timestamp)}.png", cv_image)
         bag.close()
+
+
+if __name__ == "__main__":
+    main()
