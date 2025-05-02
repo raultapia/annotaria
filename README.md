@@ -1,6 +1,11 @@
-# Annotaria
-
+<div align="center" style="margin-bottom: 10px;">
+<a href="https://github.com/raultapia/annotaria">
+<img width="500" src="https://github.com/raultapia/annotaria/blob/main/.github/assets/annotaria.png?raw=true" alt="annotaria">
+</a>
+</div>
+<p align="center" class="brief">
 Welcome to my personal image annotation framework!
+</p>
 
 ## 🧩 Installation
 
