@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "annotator"
+name = "annotaria"
 version = "1.0.0"
 description = "xxx"
 authors = [{ name = "Raul Tapia", email = "raultapia@us.es" }]
@@ -22,15 +22,15 @@ dependencies = [
 ]
 
 [project.scripts]
-bag2images = "annotator.bag2images:main"
-labelme = "annotator.labelme:main"
-labelme2coco = "annotator.labelme2coco:main"
-coco2labelme = "annotator.coco2labelme:main"
-cocoviz = "annotator.cocoviz:main"
+bag2images = "annotaria.bag2images:main"
+labelme = "annotaria.labelme:main"
+labelme2coco = "annotaria.labelme2coco:main"
+coco2labelme = "annotaria.coco2labelme:main"
+cocoviz = "annotaria.cocoviz:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
-packages = ["annotator"]
+packages = ["annotaria"]
 
 [tool.distutils.egg_info]
 egg_base = "."

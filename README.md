@@ -1,4 +1,4 @@
-# Annotation Framework
+# Annotaria
 
 Welcome to my personal image annotation framework!
 
@@ -7,7 +7,7 @@ Welcome to my personal image annotation framework!
 To get started, install the framework:
 
 ```bash
-git clone https://github.com/raultapia/annotator
+git clone https://github.com/raultapia/annotaria
 pip install .
 ```
 
