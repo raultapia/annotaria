@@ -100,3 +100,7 @@ cocoviz coco_annotations.json images_folder --skip-non-annotated
 ```
 
 ---
+
+## 📜 Acknowledgments
+
+This framework leverages the powerful capabilities of the [`labelme`](https://github.com/wkentaro/labelme) tool for image annotation and the [`labelme2coco`](https://github.com/fcakyon/labelme2coco) utility for converting annotations into the COCO dataset format. Full credit goes to their respective developers.
