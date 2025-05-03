@@ -141,7 +141,10 @@ def cocoviz(json_file, images_folder, skip_non_annotated):
             if check:
                 # Label
                 x, y, w, h = [scale * x for x in ann['bbox']]
-                label = coco['categories'][ann['category_id']]['name'].upper() + " (" + str(ann['category_id']) + ")" + "[" + str(ann['track_id']) + "]"
+                if 'track_id' in ann:
+                    label = f"{coco['categories'][ann['category_id']]['name'].upper()} ({ann['category_id']})[{ann['track_id']}]"
+                else:
+                    label = f"{coco['categories'][ann['category_id']]['name'].upper()} ({ann['category_id']})"
                 if rotate:
                     x, y = map(lambda a, b: a - b, rotate_point([x, y], img.shape), (w, h))
                 if y < 20 and Config.ADD_LABEL:
