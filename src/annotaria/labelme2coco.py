@@ -35,6 +35,24 @@ def main():
                     file_name = image.get("file_name", "")
                     image["file_name"] = os.path.basename(file_name)
 
+                image_id_prev = -1
+                cnt = 0
+                for annotation in x.get("annotations", []):
+                    image_id = annotation.get("image_id", "")
+                    if image_id == image_id_prev:
+                        cnt += 1
+                    else:
+                        cnt = 0
+                    image_id_prev = image_id
+                    for image in x.get("images", []):
+                        if image.get("id") == annotation.get("image_id"):
+                            filename = os.path.splitext(image.get("file_name", ""))[0]
+                            with open(f"{path}/{folder}/{filename}.json", 'r') as f2:
+                                data = json.load(f2)
+                                track_id = data.get("shapes", [])[cnt]["group_id"]
+                                annotation["track_id"] = track_id
+                            break
+
                 json.dump(x, f, indent=2)
 
 
