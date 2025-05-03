@@ -117,8 +117,11 @@ def cocoviz(json_file, images_folder, skip_non_annotated):
         filenames.sort()
         annotated_filenames.sort()
         has_annotations = [x in annotated_filenames for x in filenames]
+        krange = len(filenames)
+    else:
+        krange = len(img_data)
 
-    k = len(img_data) - 1 if skip_non_annotated else Counter(0, len(filenames) - 1)
+    k = Counter(0, krange - 1)
     sleep = True
     rotate = False
     cv2.namedWindow("COCO VISUALIZER", cv2.WINDOW_AUTOSIZE)
