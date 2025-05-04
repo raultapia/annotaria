@@ -1,0 +1,106 @@
+{
+  "images": [
+    {
+      "height": 366,
+      "width": 640,
+      "id": 1,
+      "file_name": "000000002592.jpg"
+    },
+    {
+      "height": 480,
+      "width": 640,
+      "id": 2,
+      "file_name": "000000011122.jpg"
+    },
+    {
+      "height": 427,
+      "width": 640,
+      "id": 3,
+      "file_name": "000000013348.jpg"
+    }
+  ],
+  "annotations": [
+    {
+      "iscrowd": 0,
+      "image_id": 1,
+      "bbox": [
+        221.179245283019,
+        34.650943396226,
+        208.962264150943,
+        213.207547169812
+      ],
+      "segmentation": [],
+      "category_id": 0,
+      "id": 1,
+      "area": 44552,
+      "track_id": 1
+    },
+    {
+      "iscrowd": 0,
+      "image_id": 1,
+      "bbox": [
+        28.72641509434,
+        220.028301886792,
+        586.792452830188,
+        96.22641509434
+      ],
+      "segmentation": [],
+      "category_id": 1,
+      "id": 2,
+      "area": 56464,
+      "track_id": null
+    },
+    {
+      "iscrowd": 0,
+      "image_id": 2,
+      "bbox": [
+        252.887700534759,
+        165.401069518716,
+        76.470588235294,
+        77.005347593583
+      ],
+      "segmentation": [],
+      "category_id": 2,
+      "id": 3,
+      "area": 5888,
+      "track_id": 1
+    },
+    {
+      "iscrowd": 0,
+      "image_id": 3,
+      "bbox": [
+        5.071090047393,
+        142.646919431279,
+        560.189573459716,
+        151.184834123223
+      ],
+      "segmentation": [],
+      "category_id": 3,
+      "id": 4,
+      "area": 84692,
+      "track_id": 1
+    }
+  ],
+  "categories": [
+    {
+      "id": 0,
+      "name": "mug",
+      "supercategory": "mug"
+    },
+    {
+      "id": 1,
+      "name": "knife",
+      "supercategory": "knife"
+    },
+    {
+      "id": 2,
+      "name": "stop",
+      "supercategory": "stop"
+    },
+    {
+      "id": 3,
+      "name": "plane",
+      "supercategory": "plane"
+    }
+  ]
+}

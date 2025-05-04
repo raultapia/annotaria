@@ -59,7 +59,7 @@ def run_interp(data, n, debug=None):
     for i in range(len(image_id)):
         d = deepcopy(data[0])
         d["image_id"] = image_id[i]
-        d["bbox"] = [bbox_x[i], bbox_y[i], bbox_w[i], bbox_h[i]]
+        d["bbox"] = [round(bbox_x[i], 12), round(bbox_y[i], 12), round(bbox_w[i], 12), round(bbox_h[i], 12)]
         d["segmentation"] = []
         d["category_id"] = category_id[i]
         d["area"] = int(bbox_w[i] * bbox_h[i])

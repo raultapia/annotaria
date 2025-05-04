@@ -24,6 +24,9 @@ dependencies = [
     "ultralytics",
 ]
 
+[project.optional-dependencies]
+test = ["pytest"]
+
 [project.scripts]
 autolabel = "annotaria.autolabel:main"
 bag2images = "annotaria.bag2images:main"
@@ -39,3 +42,7 @@ packages = ["annotaria"]
 
 [tool.distutils.egg_info]
 egg_base = "."
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]

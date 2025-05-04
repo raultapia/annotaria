@@ -107,7 +107,7 @@ def coco2labelme(coco_json_path, images_folder):
 
         shape = {
             "label": category_name,
-            "points": points,
+            "points": [[round(coord, 12) for coord in point] for point in points],
             "group_id": group_id,
             "description": "",
             "shape_type": shape_type,

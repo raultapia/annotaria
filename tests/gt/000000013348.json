@@ -1,0 +1,28 @@
+{
+  "version": "5.4.1",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "plane",
+      "points": [
+        [
+          5.071090047393,
+          142.646919431279
+        ],
+        [
+          565.260663507109,
+          293.831753554502
+        ]
+      ],
+      "group_id": 1,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "000000013348.jpg",
+  "imageData": null,
+  "imageHeight": 427,
+  "imageWidth": 640
+}

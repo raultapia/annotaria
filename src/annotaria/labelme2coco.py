@@ -52,6 +52,7 @@ def main():
                                 track_id = data.get("shapes", [])[cnt]["group_id"]
                                 annotation["track_id"] = track_id
                             break
+                    annotation["bbox"] = [round(coord, 12) for coord in annotation.get("bbox", [])]
 
                 json.dump(x, f, indent=2)
 

@@ -37,7 +37,7 @@ def run_yolo(image_folder, weight_file, conf_thresh):
                 if x.boxes.conf > conf_thresh:
                     ret["shapes"].append({
                         "label": x.names[int(x.boxes.cls)],
-                        "points": [[int(x.boxes.xyxy[0][0]), int(x.boxes.xyxy[0][1])], [int(x.boxes.xyxy[0][2]), int(x.boxes.xyxy[0][3])]],
+                        "points": [[round(float(x.boxes.xyxy[0][0]), 12), round(float(x.boxes.xyxy[0][1]), 12)], [round(float(x.boxes.xyxy[0][2]), 12), round(float(x.boxes.xyxy[0][3]), 12)]],
                         "group_id": int(x.boxes.id),
                         "shape_type": "rectangle",
                     })

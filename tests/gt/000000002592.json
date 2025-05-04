@@ -1,0 +1,46 @@
+{
+  "version": "5.4.1",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "mug",
+      "points": [
+        [
+          221.179245283019,
+          34.650943396226
+        ],
+        [
+          430.141509433962,
+          247.858490566038
+        ]
+      ],
+      "group_id": 1,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "knife",
+      "points": [
+        [
+          28.72641509434,
+          220.028301886792
+        ],
+        [
+          615.518867924528,
+          316.254716981132
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "000000002592.jpg",
+  "imageData": null,
+  "imageHeight": 366,
+  "imageWidth": 640
+}
