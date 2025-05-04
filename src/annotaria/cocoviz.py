@@ -129,7 +129,9 @@ def cocoviz(json_file, images_folder, skip_non_annotated):
     cv2.setTrackbarMin("FPS", "COCO VISUALIZER", 1)
 
     while True:
-        img = cv2.imread(images_folder + img_data[k]['file_name'] if skip_non_annotated else images_folder + filenames[k])
+        img_file = img_data[k]['file_name'] if skip_non_annotated else filenames[k]
+        img = cv2.imread(images_folder + img_file)
+        cv2.setWindowTitle("COCO VISUALIZER", f"COCO VISUALIZER - {img_file}")
         if rotate:
             img = cv2.rotate(img, cv2.ROTATE_180)
         img, scale = reshape(img, 1e6)
