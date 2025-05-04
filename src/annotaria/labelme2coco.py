@@ -26,7 +26,7 @@ def main():
         if not os.path.isdir(arg):
             raise Exception(f"{arg} is not a valid folder.")
 
-    for path in sys.argv[1:]:
+    for path in args.folders:
         for folder in [x for x in os.listdir(path) if os.path.isdir(f"{path}/{x}")]:
             with open(f"{path}/{folder}.json", 'w') as f:
                 x = get_coco_from_labelme_folder(f"{path}/{folder}").json

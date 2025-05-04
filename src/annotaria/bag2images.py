@@ -29,7 +29,7 @@ def main():
         if not (os.path.isfile(arg) and arg.endswith(".bag")):
             raise Exception(f"{arg} is not a valid bag file.")
 
-    for file in sys.argv[1:]:
+    for file in args.bag_files:
         output_path = f"{os.path.abspath(file)[:-4]}"
         os.system(f"mkdir -p {output_path}")
 
