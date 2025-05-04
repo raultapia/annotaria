@@ -19,6 +19,17 @@ import numpy
 import os
 
 
+def dashed_rectangle(img, pt1, pt2, color, thickness=1, dash_length=10):
+    x1, y1 = pt1
+    x2, y2 = pt2
+    for i in range(x1, x2, dash_length * 2):
+        cv2.line(img, (i, y1), (min(i + dash_length, x2), y1), color, thickness)
+        cv2.line(img, (i, y2), (min(i + dash_length, x2), y2), color, thickness)
+    for i in range(y1, y2, dash_length * 2):
+        cv2.line(img, (x1, i), (x1, min(i + dash_length, y2)), color, thickness)
+        cv2.line(img, (x2, i), (x2, min(i + dash_length, y2)), color, thickness)
+
+
 @dataclasses.dataclass
 class Config:
     ADD_LABEL: bool = True
@@ -147,22 +158,27 @@ def cocoviz(json_file, images_folder, skip_non_annotated):
                     label = f"{coco['categories'][ann['category_id']]['name'].upper()} ({ann['category_id']})[{ann['track_id']}]"
                 else:
                     label = f"{coco['categories'][ann['category_id']]['name'].upper()} ({ann['category_id']})"
+
                 if rotate:
                     x, y = map(lambda a, b: a - b, rotate_point([x, y], img.shape), (w, h))
+
                 if y < 20 and Config.ADD_LABEL:
                     cv2.putText(img, label, (int(x), int(y + h + 30)), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color_list[ann['category_id']], 2)
                 elif Config.ADD_LABEL:
                     cv2.putText(img, label, (int(x), int(y - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color_list[ann['category_id']], 2)
-                if Config.ALWAYS_DRAW_BBOX:
-                    cv2.rectangle(img, (int(x), int(y)), (int(x + w), int(y + h)), color_list[ann['category_id']], 1)
 
                 if ('segmentation' in ann) and ann['segmentation']:
                     # Segmentation
                     points = (scale * numpy.array(ann['segmentation'])).astype(numpy.int32).reshape(-1, 1, 2)
                     img = cv2.polylines(img, [numpy.array([rotate_point(x, img.shape) for x in points]) if rotate else points], True, color_list[ann['category_id']], 3)
+                    if Config.ALWAYS_DRAW_BBOX:
+                        cv2.rectangle(img, (int(x), int(y)), (int(x + w), int(y + h)), color_list[ann['category_id']], 1)
                 else:
                     # Bounding box
-                    cv2.rectangle(img, (int(x), int(y)), (int(x + w), int(y + h)), color_list[ann['category_id']], 3)
+                    if 'is_interpolated' in ann and ann['is_interpolated']:
+                        dashed_rectangle(img, (int(x), int(y)), (int(x + w), int(y + h)), color_list[ann['category_id']], 3)
+                    else:
+                        cv2.rectangle(img, (int(x), int(y)), (int(x + w), int(y + h)), color_list[ann['category_id']], 3)
 
         sub_img = img[img.shape[0] - 150:img.shape[0] - 20, 5:280]
         img[img.shape[0] - 150:img.shape[0] - 20, 5:280] = cv2.addWeighted(sub_img, 0.5, numpy.zeros(sub_img.shape, dtype=numpy.uint8), 0.5, 1.0)
@@ -189,8 +205,13 @@ def main():
 
     if args.images_folder is None:
         args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace(".json", "/")
+        print(f"\033[33mNo images folder provided. Assuming {args.images_folder}\033[0m")
+        if not os.path.isdir(args.images_folder) and "-interp" in args.json_file:
+            print(f"\033[31m{args.images_folder} is not a valid directory.\033[0m")
+            args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace("-interp.json", "/")
+            print(f"\033[33mNo images folder provided. Assuming {args.images_folder}\033[0m")
 
-    if args.images_folder and not os.path.isdir(args.images_folder):
+    if not os.path.isdir(args.images_folder):
         raise Exception(f"{args.images_folder} is not a valid directory.")
 
     print(f"JSON file: {args.json_file}")

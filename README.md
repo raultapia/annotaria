@@ -25,6 +25,7 @@ pip install .
 | `labelme2coco` | Convert `labelme` annotation files into the widely-used COCO dataset format for compatibility |
 | `coco2labelme` | Recreate `labelme` JSON files from a COCO JSON file, retrieving original data                 |
 | `cocoviz`      | Visualize COCO dataset annotations with an interactive GUI                                    |
+| `interpolator` | Interpolate annotations using cubic splines                                                   |
 
 ---
 
@@ -97,6 +98,37 @@ coco2labelme coco_annotations.json images_folder
 
 ```bash
 cocoviz coco_annotations.json images_folder --skip-non-annotated
+```
+
+---
+
+### `interpolator`
+
+#### Arguments:
+
+- `json_file` (required): Path to the COCO JSON file.
+- `-n` or `--number` (optional): Interpolation factor. Specifies the number of interpolated frames between consecutive annotations.
+- `-a` or `--auto` (optional): Automatically select the interpolation factor to fit non-annotated images.
+- `-d` or `--debug` (optional): Enable debug mode. Generates debug plots for each track and saves them in a ZIP file.
+
+#### Example:
+
+1. Interpolate with a fixed factor of 5:
+
+```bash
+interpolator coco_annotations.json -n 5
+```
+
+2. Automatically determine the interpolation factor:
+
+```bash
+interpolator coco_annotations.json -a
+```
+
+3. Enable debug mode to generate plots:
+
+```bash
+interpolator coco_annotations.json -n 5 -d
 ```
 
 ---

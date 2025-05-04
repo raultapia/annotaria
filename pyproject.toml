@@ -17,16 +17,18 @@ dependencies = [
     "labelme2coco",
     "numpy",
     "opencv-python",
+    "pillow",
     "pyqt5",
     "tqdm",
 ]
 
 [project.scripts]
 bag2images = "annotaria.bag2images:main"
-labelme = "annotaria.labelme:main"
-labelme2coco = "annotaria.labelme2coco:main"
 coco2labelme = "annotaria.coco2labelme:main"
 cocoviz = "annotaria.cocoviz:main"
+interpolator = "annotaria.interpolator:main"
+labelme = "annotaria.labelme:main"
+labelme2coco = "annotaria.labelme2coco:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
