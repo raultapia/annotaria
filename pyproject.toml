@@ -20,9 +20,11 @@ dependencies = [
     "pillow",
     "pyqt5",
     "tqdm",
+    "ultralytics",
 ]
 
 [project.scripts]
+autolabel = "annotaria.autolabel:main"
 bag2images = "annotaria.bag2images:main"
 coco2labelme = "annotaria.coco2labelme:main"
 cocoviz = "annotaria.cocoviz:main"

@@ -26,6 +26,7 @@ pip install .
 | `coco2labelme` | Recreate `labelme` JSON files from a COCO JSON file, retrieving original data                 |
 | `cocoviz`      | Visualize COCO dataset annotations with an interactive GUI                                    |
 | `interpolator` | Interpolate annotations using cubic splines                                                   |
+| `autolabel`    | Automatically generate annotations for images using YOLO                                      |
 
 ---
 
@@ -133,6 +134,41 @@ interpolator coco_annotations.json -n 5 -d
 
 ---
 
+### `autolabel`
+
+#### Arguments:
+
+- `FOLDERS` (required): One or more folders containing images to process.
+- `--confidence` or `-c` (optional): Confidence threshold for YOLO predictions (default: `0.5`).
+- `--weights` or `-w` (optional): Path to the YOLO weights file (default: `yolo11n.pt`).
+- `--force` or `-f` (optional): Skip warning and proceed without confirmation.
+
+#### Description:
+
+The `autolabel` command uses a YOLO model to automatically generate annotations for images in the specified folders. The annotations are saved as JSON files in the same folder as the images.
+
+#### Example:
+
+1. Run `autolabel` on a folder of images with default settings:
+
+```bash
+autolabel images_folder
+```
+
+2. Specify a custom YOLO weights file and confidence threshold:
+
+```bash
+autolabel images_folder -w custom_weights.pt -c 0.7
+```
+
+3. Process multiple folders and skip confirmation:
+
+```bash
+autolabel folder1 folder2 folder3 -f
+```
+
+---
+
 ## 📜 Acknowledgments
 
-This framework leverages the powerful capabilities of the [`labelme`](https://github.com/wkentaro/labelme) tool for image annotation and the [`labelme2coco`](https://github.com/fcakyon/labelme2coco) utility for converting annotations into the COCO dataset format. Full credit goes to their respective developers.
+This framework leverages the powerful capabilities of the [`labelme`](https://github.com/wkentaro/labelme) tool for image annotation, the [`labelme2coco`](https://github.com/fcakyon/labelme2coco) utility for converting annotations into the COCO dataset format, and the [`YOLO`](https://github.com/ultralytics/ultralytics) model for automatic annotation generation. Full credit goes to their respective developers.
