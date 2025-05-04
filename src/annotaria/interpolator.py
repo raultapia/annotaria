@@ -127,6 +127,8 @@ def main():
         used_image_files = {}
         for track_id, track in tqdm.tqdm(track_annotations.items(), desc="Interpolating annotations", unit="instance", colour="yellow"):
             seq = [item['image_id'] for item in track]
+            if len(seq) < 2:
+                continue
             if args.auto:
                 seq = [img["file_name"] for img in json_file.get("images", []) if img["id"] in seq]
                 seq_files = sorted([f for f in os.listdir(os.path.abspath(args.json_file).replace(".json", "/")) if f.endswith(".png")])
