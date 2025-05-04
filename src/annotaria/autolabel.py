@@ -15,6 +15,10 @@ import json
 import os
 
 
+def is_image(filename):
+    return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff'))
+
+
 def run_yolo(image_folder, weight_file, conf_thresh):
     import warnings
     warnings.filterwarnings("ignore")
@@ -25,7 +29,7 @@ def run_yolo(image_folder, weight_file, conf_thresh):
     cnt = 0
     for filename in sorted(os.listdir(image_folder)):
         cnt += 1
-        if filename.lower().endswith('.png'):
+        if is_image(filename):
             image_path = os.path.join(image_folder, filename)
             result = model.track(image_path, persist=True, save=False)[0]
             ret = {"shapes": [], "imagePath": filename, "imageData": None, "imageWidth": result.orig_shape[1], "imageHeight": result.orig_shape[0]}
@@ -37,7 +41,7 @@ def run_yolo(image_folder, weight_file, conf_thresh):
                         "group_id": int(x.boxes.id),
                         "shape_type": "rectangle",
                     })
-            with open(os.path.join(image_folder, filename.replace(".png", ".json")), "w") as f:
+            with open(os.path.join(image_folder, os.path.splitext(filename)[0] + ".json"), "w") as f:
                 f.write(json.dumps(ret, indent=4))
 
 

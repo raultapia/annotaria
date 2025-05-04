@@ -22,6 +22,10 @@ import tqdm
 import zipfile
 
 
+def is_image(filename):
+    return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff'))
+
+
 def generate_indices(vector, n):
     ret = [float(vector[0])]
     for i in range(len(vector) - 1):
@@ -131,7 +135,7 @@ def main():
                 continue
             if args.auto:
                 seq = [img["file_name"] for img in json_file.get("images", []) if img["id"] in seq]
-                seq_files = sorted([f for f in os.listdir(os.path.abspath(args.json_file).replace(".json", "/")) if f.endswith(".png")])
+                seq_files = sorted([f for f in os.listdir(os.path.abspath(args.json_file).replace(".json", "/")) if is_image(f)])
                 n = [sum(1 for f in seq_files if seq[i] < f < seq[i + 1]) for i in range(len(seq) - 1)]
                 interp_annotations.extend(run_interp(track, n, debug_zip))
 

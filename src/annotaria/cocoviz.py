@@ -30,6 +30,10 @@ def dashed_rectangle(img, pt1, pt2, color, thickness=1, dash_length=10):
         cv2.line(img, (x2, i), (x2, min(i + dash_length, y2)), color, thickness)
 
 
+def is_image(filename):
+    return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff'))
+
+
 @dataclasses.dataclass
 class Config:
     ADD_LABEL: bool = True
@@ -123,7 +127,7 @@ def cocoviz(json_file, images_folder, skip_non_annotated):
     color_list = generate_colors(len(coco['categories']), "RAINBOW")
 
     if not skip_non_annotated:
-        filenames = [x for x in os.listdir(images_folder) if x[-4:] == '.png']
+        filenames = [x for x in os.listdir(images_folder) if is_image(x)]
         annotated_filenames = [x['file_name'] for x in img_data]
         filenames.sort()
         annotated_filenames.sort()
