@@ -75,6 +75,7 @@ def coco2labelme(coco_json_path, images_folder):
         image_id = ann["image_id"]
         cat_id = ann["category_id"]
         category_name = cat_id_to_name[cat_id]
+        group_id = ann["track_id"]
 
         if ann["area"] < 3:
             points = ann["segmentation"][0] if len(ann["segmentation"]) > 0 else []
@@ -107,7 +108,7 @@ def coco2labelme(coco_json_path, images_folder):
         shape = {
             "label": category_name,
             "points": points,
-            "group_id": None,
+            "group_id": group_id,
             "description": "",
             "shape_type": shape_type,
             "flags": {},
