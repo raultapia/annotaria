@@ -41,7 +41,7 @@ def run_yolo(image_folder, weight_file, conf_thresh):
                         "group_id": int(x.boxes.id),
                         "shape_type": "rectangle",
                     })
-            with open(os.path.join(image_folder, os.path.splitext(filename)[0] + ".json"), "w") as f:
+            with open(os.path.join(image_folder, f"{os.path.splitext(filename)[0]}.json"), "w") as f:
                 f.write(json.dumps(ret, indent=4))
 
 

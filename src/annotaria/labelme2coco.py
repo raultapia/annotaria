@@ -27,9 +27,9 @@ def main():
             raise Exception(f"{arg} is not a valid folder.")
 
     for path in args.folders:
-        for folder in [x for x in os.listdir(path) if os.path.isdir(f"{path}/{x}")]:
-            with open(f"{path}/{folder}.json", 'w') as f:
-                x = get_coco_from_labelme_folder(f"{path}/{folder}").json
+        for folder in [x for x in os.listdir(path) if os.path.isdir(os.path.join(path, x))]:
+            with open(os.path.join(path, f"{folder}.json"), 'w') as f:
+                x = get_coco_from_labelme_folder(os.path.join(path, folder)).json
 
                 for image in x.get("images", []):
                     file_name = image.get("file_name", "")
@@ -47,7 +47,7 @@ def main():
                     for image in x.get("images", []):
                         if image.get("id") == annotation.get("image_id"):
                             filename = os.path.splitext(image.get("file_name", ""))[0]
-                            with open(f"{path}/{folder}/{filename}.json", 'r') as f2:
+                            with open(os.path.join(path, folder, f"{filename}.json"), 'r') as f2:
                                 data = json.load(f2)
                                 track_id = data.get("shapes", [])[cnt]["group_id"]
                                 annotation["track_id"] = track_id

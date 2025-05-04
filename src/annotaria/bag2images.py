@@ -36,7 +36,7 @@ def main():
         bag = rosbag.Bag(file)
         topics = [key for (key, value) in bag.get_type_and_topic_info()[1].items() if value[0] == 'sensor_msgs/Image']
         for topic in topics:
-            output_subpath = f"{output_path}/{(topic[1:] if topic[0] == '/' else topic).replace('/', '_')}"
+            output_subpath = os.path.join(output_path, (topic[1:] if topic[0] == '/' else topic).replace('/', '_'))
             os.system(f"mkdir -p {output_subpath}")
             total_messages = bag.get_message_count(topic)
             progress = tqdm.tqdm(total=bag.get_message_count(topic), desc=f"{file} ({topic})", unit="message", colour="yellow")
@@ -45,7 +45,7 @@ def main():
                 bridge = cv_bridge.CvBridge()
                 cv_image = bridge.imgmsg_to_cv2(msg.message, msg.message.encoding)
                 cv_image.astype(numpy.uint8)
-                cv2.imwrite(f"{output_subpath}/{str(msg.timestamp)}.png", cv_image)
+                cv2.imwrite(os.path.join(output_subpath, f"{str(msg.timestamp)}.png"), cv_image)
         bag.close()
 
 

@@ -208,11 +208,11 @@ def main():
         raise Exception(f"{args.json_file} is not a valid JSON file.")
 
     if args.images_folder is None:
-        args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace(".json", "/")
+        args.images_folder = os.path.join(os.path.dirname(os.path.abspath(args.json_file)), os.path.basename(args.json_file).replace(".json", ""))
         print(f"\033[33mNo images folder provided. Assuming {args.images_folder}\033[0m")
         if not os.path.isdir(args.images_folder) and "-interp" in args.json_file:
             print(f"\033[31m{args.images_folder} is not a valid directory.\033[0m")
-            args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace("-interp.json", "/")
+            args.images_folder = os.path.join(os.path.dirname(os.path.abspath(args.json_file)), os.path.basename(args.json_file).replace("-interp.json", ""))
             print(f"\033[33mNo images folder provided. Assuming {args.images_folder}\033[0m")
 
     if not os.path.isdir(args.images_folder):

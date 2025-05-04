@@ -129,12 +129,8 @@ def coco2labelme(coco_json_path, images_folder):
             "imageWidth": img_info["width"]
         }
 
-        base_filename, _ = os.path.splitext(img_info["file_name"])
-        out_fn = base_filename + ".json"
-        out_fp = os.path.join(images_folder, out_fn)
-
+        out_fp = os.path.join(images_folder, f"{os.path.splitext(img_info['file_name'])[0]}.json")
         os.makedirs(images_folder, exist_ok=True)
-
         with open(out_fp, 'w', encoding='utf-8') as f:
             json.dump(labelme_annotation, f, ensure_ascii=False, indent=2)
 
@@ -149,7 +145,7 @@ def main():
         raise Exception(f"{args.json_file} is not a valid JSON file.")
 
     if args.images_folder is None:
-        args.images_folder = os.path.dirname(os.path.abspath(args.json_file)) + "/" + os.path.basename(args.json_file).replace(".json", "/")
+        args.images_folder = os.path.join(os.path.dirname(os.path.abspath(args.json_file)), os.path.splitext(os.path.basename(args.json_file))[0])
 
     if args.images_folder and not os.path.isdir(args.images_folder):
         raise Exception(f"{args.images_folder} is not a valid directory.")
