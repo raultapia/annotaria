@@ -43,7 +43,8 @@ def spline_interpolation(x, y, xs):
 
 
 def run_interp(data, n, debug=None):
-    image_id = generate_indices([item['image_id'] for item in data], n)
+    orig_id = [item['image_id'] for item in data]
+    image_id = generate_indices(orig_id, n)
     category_id, mode = mode_interpolation([item['category_id'] for item in data], n)
     bbox_x = spline_interpolation([item['image_id'] for item in data], [item['bbox'][0] for item in data], image_id)
     bbox_y = spline_interpolation([item['image_id'] for item in data], [item['bbox'][1] for item in data], image_id)
@@ -58,7 +59,7 @@ def run_interp(data, n, debug=None):
         d["segmentation"] = []
         d["category_id"] = category_id[i]
         d["area"] = int(bbox_w[i] * bbox_h[i])
-        d["is_interpolated"] = not (image_id[i] == int(image_id[i]))
+        d["is_interpolated"] = image_id[i] not in orig_id
         output.append(d)
 
     if debug is not None:
